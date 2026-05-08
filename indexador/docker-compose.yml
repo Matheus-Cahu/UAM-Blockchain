@@ -1,0 +1,28 @@
+services:
+  indexador:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules # Protege o node_modules interno do build
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/auditoria
+    depends_on:
+      - db
+    # Forçamos o comando para rodar o seu arquivo api.js
+    command: node api.js
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=auditoria
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Comando mágico para criar a tabela
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
