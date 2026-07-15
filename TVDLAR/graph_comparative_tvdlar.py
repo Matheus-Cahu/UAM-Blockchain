@@ -99,7 +99,7 @@ for folder in folders:
             ax.set_title(f"Modelagem TVDLAR: {bateria_id} | RMSE: {rmse_val:.4f}")
             ax.set_xlabel("Ciclo")
             ax.set_ylabel("State of Health (%)")
-            ax.set_ylim(40, 110)
+            ax.set_ylim(min(curva_modelada_Y), 110)
             ax.legend(frameon=True)
             
             plt.savefig(os.path.join(output_dir, f"{bateria_id}_tvdlar_final.png"), dpi=150)
